@@ -325,10 +325,10 @@
 
         // Search functionality
         function searchData() {
-            // Get filter values from input fields
+            // Get filter values from input fields and trim whitespace
             const startDate = document.getElementById('search-start-date').value;
             const endDate = document.getElementById('search-end-date').value;
-            const teacher = document.getElementById('search-teacher').value.toLowerCase();
+            const teacher = document.getElementById('search-teacher').value.toLowerCase().trim();
             const subject = document.getElementById('search-subject').value;
             const award = document.getElementById('search-award').value;
             const type = document.getElementById('search-type').value;
@@ -348,7 +348,9 @@
                 }
 
                 // Other filters
-                if (teacher && !row[2].toLowerCase().includes(teacher)) return false;
+                // Safely access the teacher name and handle non-string values
+                const rowTeacher = (row[2] || '').toString().toLowerCase().trim();
+                if (teacher && !rowTeacher.includes(teacher)) return false;
                 if (subject && row[4] !== subject) return false;
                 if (award && row[6] !== award) return false;
                 if (type && row[9] !== type) return false;
@@ -554,8 +556,7 @@
         }
 
         function createCharts(data) {
-            // Vibrant color palette
-            const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#E7E9ED', '#7C4DFF', '#00BCD4'];
+            const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#3b82f6', '#8b5cf6', '#ec4899', '#14b8a6'];
             
             // Subject chart
             createDoughnutChart('subjectChart', data, 4, colors);
